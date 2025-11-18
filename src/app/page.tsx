@@ -1,5 +1,7 @@
 import About from "@/components/home/About";
 import Hero from "@/components/home/Hero";
+import Menu from "@/components/home/Menu";
+import Testimonial from "@/components/home/Testimonial";
 import Header from "@/components/layout/Header";
 
 export default function Home() {
@@ -10,6 +12,8 @@ export default function Home() {
         {/* Hero Section */}
         <Hero />
         <About />
+        <Menu />
+        <Testimonial />
       </main>
     </div>
   )
