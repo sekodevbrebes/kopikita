@@ -1,4 +1,5 @@
 import About from "@/components/home/About";
+import Contact from "@/components/home/Contact";
 import Hero from "@/components/home/Hero";
 import Menu from "@/components/home/Menu";
 import Testimonial from "@/components/home/Testimonial";
@@ -14,6 +15,7 @@ export default function Home() {
         <About />
         <Menu />
         <Testimonial />
+        <Contact />
       </main>
     </div>
   )
