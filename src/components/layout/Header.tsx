@@ -1,23 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Coffee, Search, ShoppingCart, User, Menu, X } from "lucide-react";
+import NavLinks from "./header/NavLinks";
+
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("Home");
 
-  const handleScroll = (section) => {
+  // Smooth scroll on click
+  const handleScroll = (section: string) => {
     const element = document.getElementById(section.toLowerCase());
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-    setOpen(false); // Tutup mobile menu setelah klik
+    if (element) element.scrollIntoView({ behavior: "smooth" });
+    setOpen(false);
   };
+
+  // ScrollSpy: detect active section on scroll
+  useEffect(() => {
+    const sections = ["home", "tentang", "menu", "testimoni", "kontak"];
+
+    const handleScrollSpy = () => {
+      const scrollPos = window.scrollY + 250; // tambah offset agar akurat
+
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveSection(section.charAt(0).toUpperCase() + section.slice(1));
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollSpy);
+    return () => window.removeEventListener("scroll", handleScrollSpy);
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-100">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        
+
         {/* Logo */}
         <div className="flex items-center">
           <div className="w-10 h-10 rounded-full bg-amber-700 flex items-center justify-center mr-3">
@@ -27,22 +53,9 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
-          {["Home", "Menu", "Tentang", "Testimoni", "Kontak"].map((item) => (
-            <button
-              key={item}
-              onClick={() => handleScroll(item)}
-              className="relative text-gray-600 hover:text-amber-700 transition-colors font-medium cursor-pointer
-              after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[3px]
-              after:bg-gradient-to-r after:from-amber-800 after:via-amber-600 after:to-yellow-400
-              after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {item}
-            </button>
-          ))}
-        </nav>
+        <NavLinks active={activeSection} onNavigate={handleScroll} />
 
-        {/* Desktop Search */}
+        {/* Search Box */}
         <div className="hidden md:flex items-center bg-gray-100 rounded-lg px-4 py-2 max-w-md mx-8">
           <Search className="w-5 h-5 text-gray-400 mr-2" />
           <input
@@ -52,7 +65,7 @@ export default function Header() {
           />
         </div>
 
-        {/* Desktop Actions */}
+        {/* Desktop Action Buttons */}
         <div className="hidden md:flex items-center space-x-4">
           <button className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
             <ShoppingCart className="w-6 h-6 text-gray-700" />
@@ -67,13 +80,13 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Hamburger Mobile */}
+        {/* Mobile Hamburger */}
         <button className="md:hidden p-2" onClick={() => setOpen(!open)}>
-          {open ? <X className="w-6 h-6 text-amber-800" /> : <Menu className="w-6 h-6 text-amber-800 cursor-pointer" />}
+          {open ? <X className="w-6 h-6 text-amber-800" /> : <Menu className="w-6 h-6 text-amber-800" />}
         </button>
       </div>
 
-      {/* Mobile Slide Menu */}
+      {/* Mobile Menu */}
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 border-r border-gray-200 transform
         transition-transform duration-300 ease-out
@@ -84,11 +97,8 @@ export default function Header() {
             <button
               key={item}
               onClick={() => handleScroll(item)}
-              className="relative w-full text-left text-lg text-gray-700 font-medium py-2
-              hover:text-amber-700 transition-colors
-              after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[3px]
-              after:bg-gradient-to-r after:from-amber-800 after:via-amber-600 after:to-yellow-400
-              after:transition-all after:duration-300 hover:after:w-full cursor-pointer"
+              className={`relative w-full text-left text-lg font-medium py-2 transition-colors cursor-pointer
+              ${activeSection === item ? "text-amber-700" : "text-gray-700 hover:text-amber-700"}`}
             >
               {item}
             </button>
