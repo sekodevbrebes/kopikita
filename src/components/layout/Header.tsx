@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Coffee, Search, ShoppingCart, User, Menu, X } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
 import NavLinks from "./header/NavLinks";
+import Logo from "./header/Logo";
 
 
 export default function Header() {
@@ -43,15 +44,8 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-100">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-
         {/* Logo */}
-        <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-amber-700 flex items-center justify-center mr-3">
-            <Coffee className="text-white w-5 h-5" />
-          </div>
-          <span className="text-xl font-bold text-amber-800">KopiKu</span>
-        </div>
-
+        <Logo />
         {/* Desktop Navigation */}
         <NavLinks active={activeSection} onNavigate={handleScroll} />
 

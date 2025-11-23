@@ -1,4 +1,6 @@
 import { Star, Coffee, Zap } from "lucide-react";
+import Button from "../ui/Button";
+import StatCard from "../ui/StatCard";
 
 export default function Hero() {
     return (
@@ -11,38 +13,28 @@ export default function Hero() {
                     <p className="text-lg md:text-xl mb-6 text-gray-100 max-w-lg">
                         Dari biji kopi pilihan terbaik, disangrai dengan sempurna untuk memberikan pengalaman rasa yang tak terlupakan di setiap tegukan.
                     </p>
+
                     <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
-                        <button
-                            className="cursor-pointer px-6 py-2 text-sm bg-white text-amber-800 rounded-2xl hover:bg-gray-100 font-medium shadow-md"
-                        >
+                        <Button variant="primary">
                             Lihat Menu
-                        </button>
-                        <button
-                            className="cursor-pointer px-6 py-2 text-sm bg-transparent border-2 border-white text-white rounded-2xl hover:bg-white/10 font-medium"
-                        >
+                        </Button>
+                        <Button variant="secondary">
                             Tentang Kami
-                        </button>
+                        </Button>
                     </div>
 
+                    {/* Penggunaan komponen StatCard juga tetap sama */}
                     <div className="mt-8 flex items-center space-x-6">
-                        <div className="flex items-center">
-                            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-2">
-                                <Star className="text-yellow-300 w-4 h-4" />
-                            </div>
-                            <div>
-                                <p className="font-bold">4.9/5</p>
-                                <p className="text-sm text-gray-200">500+ ulasan</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center">
-                            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-2">
-                                <Coffee className="text-white w-4 h-4" />
-                            </div>
-                            <div>
-                                <p className="font-bold">50+</p>
-                                <p className="text-sm text-gray-200">Varian Menu</p>
-                            </div>
-                        </div>
+                        <StatCard
+                            icon={Star}
+                            value="4.9/5"
+                            label="500+ ulasan"
+                        />
+                        <StatCard
+                            icon={Coffee}
+                            value="50+"
+                            label="Varian Menu"
+                        />
                     </div>
                 </div>
 
@@ -65,6 +57,6 @@ export default function Hero() {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     )
 }

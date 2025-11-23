@@ -6,14 +6,13 @@ export default function NavLinks({ onNavigate }) {
   const links = ["Home", "Tentang", "Menu", "Testimoni", "Kontak"];
   const [activeSection, setActiveSection] = useState("Home");
 
-  // Detect section on scroll
   useEffect(() => {
     const handleScroll = () => {
       const sections = links.map((item) =>
         document.getElementById(item.toLowerCase())
       );
 
-      const scrollPos = window.scrollY + 200; // toleransi agar akurat
+      const scrollPos = window.scrollY + 200;
 
       sections.forEach((section, index) => {
         if (
