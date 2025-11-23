@@ -1,43 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FilterButton from "../menu/FilterButton";
 import SectionHeader from "../menu/SectionHeader";
 import MenuCard from "../menu/MenuCard";
 import { menuItems, categories } from "../../data/menuData";
 import MenuSkeleton from "../menu/MenuSkeleton";
 
-
 export default function Menu() {
-    const [activeCategory, setActiveCategory] = useState('all');
+    const [activeCategory, setActiveCategory] = useState("all");
     const [visibleCount, setVisibleCount] = useState(8);
-    const [loading, setLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true);
+    const [loadingFilter, setLoadingFilter] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [loadMoreSkeletonCount, setLoadMoreSkeletonCount] = useState(0);
 
+    // ---- Loading awal halaman ----
+    useEffect(() => {
+        const timer = setTimeout(() => setInitialLoading(false), 150); // awal cepat
+        return () => clearTimeout(timer);
+    }, []);
+
+    // ---- Ketika kategori dipilih ----
     const handleFilterChange = (categoryValue) => {
         setActiveCategory(categoryValue);
         setVisibleCount(8);
-    };
-
-    const filteredMenuItems = menuItems.filter(item => {
-        if (activeCategory === 'all') {
-            return true;
-        }
-        return item.category === activeCategory;
-    });
-
-    const visibleItems = filteredMenuItems.slice(0, visibleCount);
-    const handleLoadMore = () => {
-        setLoading(true);
+        setLoadingFilter(true);
 
         setTimeout(() => {
-            setVisibleCount((prev) => prev + 4);
-            setLoading(false);
-        }, 1200);
+            setLoadingFilter(false);
+        }, 150);
+    };
+
+    const filteredMenuItems = menuItems.filter((item) =>
+        activeCategory === "all" ? true : item.category === activeCategory
+    );
+
+    const visibleItems = filteredMenuItems.slice(0, visibleCount);
+
+    // ---- Load more ----
+    const handleLoadMore = () => {
+        const newCount = 4; // tambahan item
+        setLoadMoreSkeletonCount(newCount);
+        setLoadingMore(true);
+
+        setTimeout(() => {
+            setVisibleCount((prev) => prev + newCount);
+            setLoadingMore(false);
+            setLoadMoreSkeletonCount(0);
+        }, 150);
     };
 
     return (
         <section id="menu" className="py-16 bg-white">
             <div className="container mx-auto px-4">
+
                 <SectionHeader
                     title="Menu Andalan Kami"
                     subtitle="Temukan berbagai varian kopi dan minuman spesial yang siap memanjakan lidah Anda."
@@ -56,35 +73,49 @@ export default function Menu() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    {visibleItems.map((item, index) => (
-                        <MenuCard
-                            key={index}
-                            name={item.name}
-                            description={item.description}
-                            price={item.price}
-                            image={item.image}
-                            popular={item.popular}
-                        />
-                    ))}
 
-                    {/*  Skeleton  */}
-                    {loading &&
-                        [...Array(4)].map((_, i) => <MenuSkeleton key={`skeleton-${i}`} />)}
+                    {/* Skeleton awal & skeleton filter */}
+                    {(initialLoading || loadingFilter) &&
+                        [...Array(visibleItems.length || 8)].map((_, i) => (
+                            <MenuSkeleton key={`skeleton-init-${i}`} />
+                        ))}
+
+                    {/* Card tampil ketika selesai loading */}
+                    {!initialLoading && !loadingFilter &&
+                        visibleItems.map((item, index) => (
+                            <MenuCard
+                                key={index}
+                                name={item.name}
+                                description={item.description}
+                                price={item.price}
+                                image={item.image}
+                                popular={item.popular}
+                            />
+                        ))}
+
+                    {/* Skeleton untuk load more (hanya untuk item baru) */}
+                    {loadingMore &&
+                        [...Array(loadMoreSkeletonCount)].map((_, i) => (
+                            <MenuSkeleton key={`skeleton-loadmore-${i}`} />
+                        ))}
                 </div>
-                {/* Tombol Load More hanya muncul jika masih ada item tersisa */}
-                {!loading && visibleCount < filteredMenuItems.length && (
-                    <div className="text-center mt-12">
-                        <button
-                            onClick={handleLoadMore}
-                            className="px-6 py-2 border-2 border-amber-700 text-amber-700 rounded-2xl hover:bg-amber-700 hover:text-white font-medium cursor-pointer"
-                        >
-                            Muat Lebih Banyak
-                        </button>
-                    </div>
-                )}
 
-                {loading && (
-                     <div className="text-center mt-12 flex justify-center">
+                {/* Tombol Muat Lebih Banyak */}
+                {!initialLoading && !loadingFilter && !loadingMore &&
+                    visibleCount < filteredMenuItems.length && (
+                        <div className="text-center mt-12">
+                            <button
+                                onClick={handleLoadMore}
+                                className="px-6 py-2 border-2 border-amber-700 text-amber-700 rounded-2xl hover:bg-amber-700 hover:text-white font-medium cursor-pointer"
+                            >
+                                Muat Lebih Banyak
+                            </button>
+                        </div>
+                    )}
+
+                {/* Tombol loading saat load more */}
+                {loadingMore && (
+                    <div className="text-center mt-12 flex justify-center">
                         <button
                             disabled
                             className="px-6 py-2 border-2 border-gray-400 text-gray-400 rounded-2xl font-medium cursor-not-allowed flex items-center justify-center gap-2"
@@ -94,8 +125,7 @@ export default function Menu() {
                         </button>
                     </div>
                 )}
-
             </div>
         </section>
-    )
+    );
 }

@@ -1,5 +1,8 @@
+"use client";
+
 import { Plus } from "lucide-react";
 import HeartButton from "./HeartButton";
+import Image from "next/image";
 
 export default function MenuCard({ name, description, price, image, popular }) {
   return (
@@ -9,12 +12,22 @@ export default function MenuCard({ name, description, price, image, popular }) {
           Populer
         </span>
       )}
+
       <HeartButton />
-      <img
-        src={image}
-        alt={name}
-        className="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
-      />
+
+      {/* Image wrapper agar ukuran tetap sama seperti <img> */}
+      <div className="relative w-full h-48 overflow-hidden">
+        <Image
+          src={image}
+          alt={name}
+          fill
+          className="object-cover hover:scale-105 transition-transform duration-500"
+          sizes="(max-width: 768px) 100vw,
+                 (max-width: 1200px) 50vw,
+                 25vw"
+        />
+      </div>
+
       <div className="p-4">
         <h3 className="text-lg font-bold text-amber-800 mb-2">{name}</h3>
         <p className="text-gray-600 text-sm mb-4">{description}</p>
