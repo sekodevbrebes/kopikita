@@ -1,11 +1,25 @@
-import { Coffee, Search, ShoppingCart, User } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { Coffee, Search, ShoppingCart, User, Menu, X } from "lucide-react";
 
 export default function Header() {
+  const [open, setOpen] = useState(false);
+
+  const handleScroll = (section) => {
+    const element = document.getElementById(section.toLowerCase());
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setOpen(false); // Tutup mobile menu setelah klik
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-100">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        
+        {/* Logo */}
         <div className="flex items-center">
-          {/* Logo */}
           <div className="w-10 h-10 rounded-full bg-amber-700 flex items-center justify-center mr-3">
             <Coffee className="text-white w-5 h-5" />
           </div>
@@ -13,26 +27,22 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="space-x-8">
-          <button className="text-gray-600 hover:text-amber-700 transition-colors font-medium cursor-pointer">
-            Home
-          </button>
-          <button className="text-gray-600 hover:text-amber-700 transition-colors font-medium cursor-pointer">
-            Menu
-          </button>
-          <button className="text-gray-600 hover:text-amber-700 transition-colors font-medium cursor-pointer">
-            Tentang
-          </button>
-
-          <button className="text-gray-600 hover:text-amber-700 transition-colors font-medium cursor-pointer">
-            Testimoni
-          </button>
-          <button className="text-gray-600 hover:text-amber-700 transition-colors font-medium cursor-pointer">
-            Kontak
-          </button>
+        <nav className="hidden md:flex space-x-8">
+          {["Home", "Menu", "Tentang", "Testimoni", "Kontak"].map((item) => (
+            <button
+              key={item}
+              onClick={() => handleScroll(item)}
+              className="relative text-gray-600 hover:text-amber-700 transition-colors font-medium cursor-pointer
+              after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[3px]
+              after:bg-gradient-to-r after:from-amber-800 after:via-amber-600 after:to-yellow-400
+              after:transition-all after:duration-300 hover:after:w-full"
+            >
+              {item}
+            </button>
+          ))}
         </nav>
 
-        {/* Search Bar */}
+        {/* Desktop Search */}
         <div className="hidden md:flex items-center bg-gray-100 rounded-lg px-4 py-2 max-w-md mx-8">
           <Search className="w-5 h-5 text-gray-400 mr-2" />
           <input
@@ -42,21 +52,58 @@ export default function Header() {
           />
         </div>
 
-        {/* Right Side Actions */}
-        <div className="flex items-center space-x-4">
-          {/* Cart Button */}
-          <button
-            className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
+        {/* Desktop Actions */}
+        <div className="hidden md:flex items-center space-x-4">
+          <button className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
             <ShoppingCart className="w-6 h-6 text-gray-700" />
             <span className="absolute -top-1 -right-1 bg-amber-700 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
               2
             </span>
           </button>
-          {/* Profile Dropdown */}
-          <button
-            className="flex items-center space-x-2 bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 transition-colors"
-          >
+
+          <button className="flex items-center space-x-2 bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 transition-colors">
+            <User className="w-4 h-4" />
+            <span className="text-sm">Masuk</span>
+          </button>
+        </div>
+
+        {/* Hamburger Mobile */}
+        <button className="md:hidden p-2" onClick={() => setOpen(!open)}>
+          {open ? <X className="w-6 h-6 text-amber-800" /> : <Menu className="w-6 h-6 text-amber-800 cursor-pointer" />}
+        </button>
+      </div>
+
+      {/* Mobile Slide Menu */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 border-r border-gray-200 transform
+        transition-transform duration-300 ease-out
+        ${open ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        <div className="p-5 flex flex-col space-y-6 mt-14">
+          {["Home", "Menu", "Tentang", "Testimoni", "Kontak"].map((item) => (
+            <button
+              key={item}
+              onClick={() => handleScroll(item)}
+              className="relative w-full text-left text-lg text-gray-700 font-medium py-2
+              hover:text-amber-700 transition-colors
+              after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[3px]
+              after:bg-gradient-to-r after:from-amber-800 after:via-amber-600 after:to-yellow-400
+              after:transition-all after:duration-300 hover:after:w-full cursor-pointer"
+            >
+              {item}
+            </button>
+          ))}
+
+          <hr />
+
+          <button className="relative p-2 w-fit hover:bg-gray-100 rounded-full transition-colors">
+            <ShoppingCart className="w-6 h-6 text-gray-700" />
+            <span className="absolute -top-1 -right-1 bg-amber-700 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              2
+            </span>
+          </button>
+
+          <button className="flex items-center justify-center space-x-2 bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 transition-colors">
             <User className="w-4 h-4" />
             <span className="text-sm">Masuk</span>
           </button>

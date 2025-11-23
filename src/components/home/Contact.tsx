@@ -2,7 +2,7 @@ import { ExternalLink, MapPin, Phone, Mail, Clock } from "lucide-react";
 
 export default function Contact() {
     return (
-        <section id="contact" className="py-16 bg-white">
+        <section id="kontak" className="py-16 bg-white">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <div className="inline-block text-left">

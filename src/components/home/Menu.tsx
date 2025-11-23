@@ -5,11 +5,13 @@ import FilterButton from "../menu/FilterButton";
 import SectionHeader from "../menu/SectionHeader";
 import MenuCard from "../menu/MenuCard";
 import { menuItems, categories } from "../../data/menuData";
+import MenuSkeleton from "../menu/MenuSkeleton";
 
 
 export default function Menu() {
     const [activeCategory, setActiveCategory] = useState('all');
     const [visibleCount, setVisibleCount] = useState(8);
+    const [loading, setLoading] = useState(false);
 
     const handleFilterChange = (categoryValue) => {
         setActiveCategory(categoryValue);
@@ -25,7 +27,12 @@ export default function Menu() {
 
     const visibleItems = filteredMenuItems.slice(0, visibleCount);
     const handleLoadMore = () => {
-        setVisibleCount((prev) => prev + 4);
+        setLoading(true);
+
+        setTimeout(() => {
+            setVisibleCount((prev) => prev + 4);
+            setLoading(false);
+        }, 1200);
     };
 
     return (
@@ -59,9 +66,13 @@ export default function Menu() {
                             popular={item.popular}
                         />
                     ))}
+
+                    {/*  Skeleton  */}
+                    {loading &&
+                        [...Array(4)].map((_, i) => <MenuSkeleton key={`skeleton-${i}`} />)}
                 </div>
                 {/* Tombol Load More hanya muncul jika masih ada item tersisa */}
-                {visibleCount < filteredMenuItems.length && (
+                {!loading && visibleCount < filteredMenuItems.length && (
                     <div className="text-center mt-12">
                         <button
                             onClick={handleLoadMore}
@@ -71,6 +82,19 @@ export default function Menu() {
                         </button>
                     </div>
                 )}
+
+                {loading && (
+                     <div className="text-center mt-12 flex justify-center">
+                        <button
+                            disabled
+                            className="px-6 py-2 border-2 border-gray-400 text-gray-400 rounded-2xl font-medium cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                            <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></span>
+                            Memuat...
+                        </button>
+                    </div>
+                )}
+
             </div>
         </section>
     )

@@ -2,7 +2,7 @@ import { Sprout, Flame, Award } from "lucide-react";
 
 export default function About() {
     return (
-        <section id="about" className="py-16 bg-amber-50">
+        <section id="tentang" className="py-16 bg-amber-50">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
 

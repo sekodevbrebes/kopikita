@@ -2,7 +2,7 @@
 
 export default function Testimonial() {
     return (
-        <section id="testimonial" className="py-16 bg-amber-50">
+        <section id="testimoni" className="py-16 bg-amber-50">
            <div className="container mx-auto px-4">
         <div className="text-center mb-16">
                     {/* Judul + garis kiri */}

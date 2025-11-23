@@ -86,7 +86,7 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="border-t border-amber-700 pt-8 text-center text-amber-300">
-                    <p>&copy; 2025 KopiKu. All rights reserved.</p>
+                    <p>&copy; 2025 Kaksus - All rights reserved.</p>
                 </div>
             </div>
         </footer>
