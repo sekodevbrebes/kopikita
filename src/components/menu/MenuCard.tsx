@@ -33,7 +33,7 @@ export default function MenuCard({ name, description, price, image, popular }) {
         <p className="text-gray-600 text-sm mb-4">{description}</p>
         <div className="flex justify-between items-center">
           <span className="text-amber-700 font-bold text-lg">{price}</span>
-          <button className="px-4 py-2 bg-amber-700 text-white rounded-xl hover:bg-amber-800 font-medium text-sm flex items-center">
+          <button className="px-4 py-2 cursor-pointer bg-amber-700 text-white rounded-xl hover:bg-amber-800 font-medium text-sm flex items-center">
             <Plus className="w-4 h-4 mr-1" />
             Pesan
           </button>
