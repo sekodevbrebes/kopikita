@@ -1,24 +1,15 @@
 import { ExternalLink, MapPin, Phone, Mail, Clock } from "lucide-react";
+import SectionHeader from "../menu/SectionHeader";
 
 export default function Contact() {
     return (
         <section id="kontak" className="py-16 bg-white">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <div className="inline-block text-left">
-                        <h2 className="text-3xl font-bold text-amber-800 mb-2">
-                            Kunjungi Toko Kami
-                        </h2>
 
-                        {/* Garis kiri lebih panjang */}
-                        <div
-                            className="h-[3px] w-48 mb-4 rounded-full bg-gradient-to-r from-amber-800 via-amber-500 to-transparent"
-                        ></div>
-                    </div>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
-                        Datang dan nikmati pengalaman kopi terbaik di tempat kami.
-                    </p>
-                </div>
+                <SectionHeader
+                    title="Kunjungi Toko Kami"
+                    subtitle="Datang dan nikmati pengalaman kopi terbaik di tempat kami."
+                />
 
                 <div className="flex flex-col lg:flex-row gap-8">
                     <div className="lg:w-1/2">
@@ -90,19 +81,19 @@ export default function Contact() {
                                         Temukan toko KopiKu terdekat di lokasi strategis dengan suasana yang nyaman untuk menikmati kopi berkualitas.
                                     </p>
                                     <div className="p-6 text-center">
-                                <a
-                                    href="https://maps.app.goo.gl/kWHUHL3qZv3dfEUQ8"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl
+                                        <a
+                                            href="https://maps.app.goo.gl/kWHUHL3qZv3dfEUQ8"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl
                                         bg-amber-700 hover:bg-amber-800 active:scale-95
                                         text-white font-normal shadow-md shadow-amber-300/20
                                         transition-all duration-200"
-                                >
-                                    <ExternalLink className="w-4 h-4" />
-                                    Buka di Google Maps
-                                </a>
-                            </div>
+                                        >
+                                            <ExternalLink className="w-4 h-4" />
+                                            Buka di Google Maps
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

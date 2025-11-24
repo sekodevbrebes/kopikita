@@ -1,3 +1,5 @@
+"use client";
+
 import { Star, Coffee, Zap } from "lucide-react";
 import Button from "../ui/Button";
 import StatCard from "../ui/StatCard";
@@ -15,10 +17,22 @@ export default function Hero() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
-                        <Button variant="primary">
+                        <Button
+                            variant="primary"
+                            onClick={() => {
+                                const section = document.getElementById("menu");
+                                section?.scrollIntoView({ behavior: "smooth" });
+                            }}
+                        >
                             Lihat Menu
                         </Button>
-                        <Button variant="secondary">
+                        <Button
+                            variant="secondary"
+                            onClick={() => {
+                                const section = document.getElementById("tentang");
+                                section?.scrollIntoView({ behavior: "smooth" });
+                            }}
+                        >
                             Tentang Kami
                         </Button>
                     </div>
