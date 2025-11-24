@@ -67,7 +67,7 @@ export const menuItems = [
     name: "Iced Vanilla Latte",
     description: "Espresso dengan susu vanilla dingin yang creamy.",
     price: "Rp 38.000",
-    image: "https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=600&q=80",
+    image: "https://images.unsplash.com/photo-1589985902809-39d25db22101?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     popular: true,
     category: "kopi-dingin",
   },
