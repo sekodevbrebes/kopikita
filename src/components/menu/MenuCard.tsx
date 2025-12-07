@@ -4,7 +4,22 @@ import { Plus } from "lucide-react";
 import HeartButton from "./HeartButton";
 import Image from "next/image";
 
-export default function MenuCard({ name, description, price, image, popular }) {
+// ✅ Tipe props MenuCard
+type MenuCardProps = {
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+  popular?: boolean;
+};
+
+export default function MenuCard({
+  name,
+  description,
+  price,
+  image,
+  popular = false,
+}: MenuCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden relative">
       {popular && (
@@ -15,7 +30,7 @@ export default function MenuCard({ name, description, price, image, popular }) {
 
       <HeartButton />
 
-      {/* Image wrapper agar ukuran tetap sama seperti <img> */}
+      {/* Image wrapper agar ukuran tetap sama */}
       <div className="relative w-full h-48 overflow-hidden">
         <Image
           src={image}
@@ -31,8 +46,10 @@ export default function MenuCard({ name, description, price, image, popular }) {
       <div className="p-4">
         <h3 className="text-lg font-bold text-amber-800 mb-2">{name}</h3>
         <p className="text-gray-600 text-sm mb-4">{description}</p>
+
         <div className="flex justify-between items-center">
           <span className="text-amber-700 font-bold text-lg">{price}</span>
+
           <button className="px-4 py-2 cursor-pointer bg-amber-700 text-white rounded-xl hover:bg-amber-800 font-medium text-sm flex items-center">
             <Plus className="w-4 h-4 mr-1" />
             Pesan
