@@ -1,4 +1,13 @@
-export default function SectionHeader({ title, subtitle }) {
+// ✅ Type props
+type SectionHeaderProps = {
+  title: string;
+  subtitle: string;
+};
+
+export default function SectionHeader({
+  title,
+  subtitle,
+}: SectionHeaderProps) {
   return (
     <div className="text-center mb-12">
       <div className="inline-block text-left">
