@@ -2,25 +2,34 @@
 
 import { useEffect, useState } from "react";
 
-export default function NavLinks({ onNavigate }) {
+export default function NavLinks(
+  props: {
+    active?: string;
+    onNavigate?: (section: string) => void;
+  }
+) {
+  const { active = "Home", onNavigate } = props;
+
   const links = ["Home", "Tentang", "Menu", "Testimoni", "Kontak"];
-  const [activeSection, setActiveSection] = useState("Home");
+  const [activeSection, setActiveSection] = useState<string>(active);
+
+  useEffect(() => {
+    setActiveSection(active);
+  }, [active]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = links.map((item) =>
-        document.getElementById(item.toLowerCase())
-      );
-
       const scrollPos = window.scrollY + 200;
 
-      sections.forEach((section, index) => {
+      links.forEach((item) => {
+        const section = document.getElementById(item.toLowerCase());
+        if (!section) return;
+
         if (
-          section &&
           scrollPos >= section.offsetTop &&
           scrollPos < section.offsetTop + section.offsetHeight
         ) {
-          setActiveSection(links[index]);
+          setActiveSection(item);
         }
       });
     };
@@ -29,12 +38,12 @@ export default function NavLinks({ onNavigate }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleClick = (item) => {
+  const handleClick = (item: string) => {
     const element = document.getElementById(item.toLowerCase());
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-    if (onNavigate) onNavigate(item);
+    onNavigate?.(item);
   };
 
   return (
