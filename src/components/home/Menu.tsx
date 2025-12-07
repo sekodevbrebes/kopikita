@@ -7,8 +7,11 @@ import MenuCard from "../menu/MenuCard";
 import { menuItems, categories } from "../../data/menuData";
 import MenuSkeleton from "../menu/MenuSkeleton";
 
+// ✅ Tipe kategori berdasarkan data
+type CategoryValue = typeof categories[number]["value"];
+
 export default function Menu() {
-    const [activeCategory, setActiveCategory] = useState("all");
+    const [activeCategory, setActiveCategory] = useState<CategoryValue>("all");
     const [visibleCount, setVisibleCount] = useState(8);
     const [initialLoading, setInitialLoading] = useState(true);
     const [loadingFilter, setLoadingFilter] = useState(false);
@@ -17,12 +20,12 @@ export default function Menu() {
 
     // ---- Loading awal halaman ----
     useEffect(() => {
-        const timer = setTimeout(() => setInitialLoading(false), 150); // awal cepat
+        const timer = setTimeout(() => setInitialLoading(false), 150);
         return () => clearTimeout(timer);
     }, []);
 
     // ---- Ketika kategori dipilih ----
-    const handleFilterChange = (categoryValue) => {
+    const handleFilterChange = (categoryValue: CategoryValue) => {
         setActiveCategory(categoryValue);
         setVisibleCount(8);
         setLoadingFilter(true);
@@ -32,6 +35,7 @@ export default function Menu() {
         }, 150);
     };
 
+    // ---- Filter menu berdasarkan kategori ----
     const filteredMenuItems = menuItems.filter((item) =>
         activeCategory === "all" ? true : item.category === activeCategory
     );
@@ -40,7 +44,7 @@ export default function Menu() {
 
     // ---- Load more ----
     const handleLoadMore = () => {
-        const newCount = 4; // tambahan item
+        const newCount = 4;
         setLoadMoreSkeletonCount(newCount);
         setLoadingMore(true);
 
@@ -54,12 +58,12 @@ export default function Menu() {
     return (
         <section id="menu" className="py-16 bg-white">
             <div className="container mx-auto px-4">
-
                 <SectionHeader
                     title="Menu Andalan Kami"
                     subtitle="Temukan berbagai varian kopi dan minuman spesial yang siap memanjakan lidah Anda."
                 />
 
+                {/* Filter kategori */}
                 <div className="flex flex-wrap justify-center gap-3 mb-10">
                     {categories.map((category) => (
                         <FilterButton
@@ -72,16 +76,17 @@ export default function Menu() {
                     ))}
                 </div>
 
+                {/* Grid menu */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-
-                    {/* Skeleton awal & skeleton filter */}
+                    {/* Skeleton awal */}
                     {(initialLoading || loadingFilter) &&
                         [...Array(visibleItems.length || 8)].map((_, i) => (
                             <MenuSkeleton key={`skeleton-init-${i}`} />
                         ))}
 
-                    {/* Card tampil ketika selesai loading */}
-                    {!initialLoading && !loadingFilter &&
+                    {/* Item menu */}
+                    {!initialLoading &&
+                        !loadingFilter &&
                         visibleItems.map((item, index) => (
                             <MenuCard
                                 key={index}
@@ -93,7 +98,7 @@ export default function Menu() {
                             />
                         ))}
 
-                    {/* Skeleton untuk load more (hanya untuk item baru) */}
+                    {/* Skeleton ketika load more */}
                     {loadingMore &&
                         [...Array(loadMoreSkeletonCount)].map((_, i) => (
                             <MenuSkeleton key={`skeleton-loadmore-${i}`} />
@@ -101,7 +106,9 @@ export default function Menu() {
                 </div>
 
                 {/* Tombol Muat Lebih Banyak */}
-                {!initialLoading && !loadingFilter && !loadingMore &&
+                {!initialLoading &&
+                    !loadingFilter &&
+                    !loadingMore &&
                     visibleCount < filteredMenuItems.length && (
                         <div className="text-center mt-12">
                             <button
@@ -113,7 +120,7 @@ export default function Menu() {
                         </div>
                     )}
 
-                {/* Tombol loading saat load more */}
+                {/* Tombol loading */}
                 {loadingMore && (
                     <div className="text-center mt-12 flex justify-center">
                         <button
