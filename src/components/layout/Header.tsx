@@ -8,34 +8,47 @@ import ActionButtons from "./header/ActionButtons";
 import HamburgerButton from "./header/HamburgerButton";
 import MobileMenu from "./header/MobileMenu";
 
+// ✅ Tipe section agar konsisten
+type Section = "Home" | "Tentang" | "Menu" | "Testimoni" | "Kontak";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("Home");
+  const [activeSection, setActiveSection] = useState<Section>("Home");
   const cartCount = 2;
 
+  // ✅ Scroll ke section
   const handleScroll = (section: string) => {
     const element = document.getElementById(section.toLowerCase());
-    if (element) element.scrollIntoView({ behavior: "smooth" });
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
     setOpen(false);
   };
 
+  // ✅ Klik login
   const handleLoginClick = () => {
     alert("Buka halaman login");
   };
 
+  // ✅ Scroll spy otomatis highlight menu
   useEffect(() => {
     const sections = ["home", "tentang", "menu", "testimoni", "kontak"];
+
     const handleScrollSpy = () => {
       const scrollPos = window.scrollY + 250;
+
       for (const section of sections) {
         const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section.charAt(0).toUpperCase() + section.slice(1));
-          }
+        if (!el) continue;
+
+        const top = el.offsetTop;
+        const height = el.offsetHeight;
+
+        if (scrollPos >= top && scrollPos < top + height) {
+          const formatted =
+            (section.charAt(0).toUpperCase() + section.slice(1)) as Section;
+
+          setActiveSection(formatted);
         }
       }
     };
@@ -49,30 +62,38 @@ export default function Header() {
       <header className="sticky top-0 z-40 bg-white border-b border-gray-100">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
 
-          <Logo onClick={() => {
-            setActiveSection("Home");
-            handleScroll("Home");
-          }} />
+          {/* Logo */}
+          <Logo
+            onClick={() => {
+              setActiveSection("Home");
+              handleScroll("Home");
+            }}
+          />
 
+          {/* Navigasi Desktop */}
           <NavLinks
             active={activeSection}
             onNavigate={handleScroll}
           />
 
+          {/* Search */}
           <SearchBox />
 
+          {/* Button Keranjang & Login */}
           <ActionButtons
             cartCount={cartCount}
-            onLoginClick={handleLoginClick} />
+            onLoginClick={handleLoginClick}
+          />
 
+          {/* Hamburger mobile */}
           <HamburgerButton
             isOpen={open}
             onClick={() => setOpen(!open)}
           />
-
         </div>
       </header>
 
+      {/* Menu Mobile */}
       <MobileMenu
         isOpen={open}
         onClose={() => setOpen(false)}
